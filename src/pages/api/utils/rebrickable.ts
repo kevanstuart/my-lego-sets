@@ -1,4 +1,4 @@
-export class Rebrickable {
+export class RebrickableClient {
   private userToken: string | undefined = undefined;
 
   private headers = new Headers({
@@ -12,18 +12,24 @@ export class Rebrickable {
   });
 
   public async getSetLists() {
-    await this.setUserToken();
-
     const response = await fetch(
       `${process.env.REBRICKABLE_BASE_URL}users/${this.userToken}/setlists/`,
       { headers: this.headers }
     );
 
-    const decodedJson = await response.json();
-    return decodedJson;
+    return (await response.json());
   }
 
-  private async setUserToken() {
+  public async getSetsByListId(listId: number) {
+    const response = await fetch(
+      `${process.env.REBRICKABLE_BASE_URL}users/${this.userToken}/setlists/${listId}/sets`,
+      { headers: this.headers }
+    );
+
+    return (await response.json());
+  }
+
+  public async setUserToken() {
     if (this.userToken === undefined) {
       this.headers.set('Content-Type', 'application/x-www-form-urlencoded');
 
