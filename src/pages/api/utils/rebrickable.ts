@@ -29,6 +29,15 @@ export class RebrickableClient {
     return (await response.json());
   }
 
+  public async getSetById(setNum: string) {
+    const response = await fetch(
+      `${process.env.REBRICKABLE_BASE_URL}lego/sets/${setNum}`,
+      { headers: this.headers }
+    );
+
+    return (await response.json());
+  }
+
   public async setUserToken() {
     if (this.userToken === undefined) {
       this.headers.set('Content-Type', 'application/x-www-form-urlencoded');
