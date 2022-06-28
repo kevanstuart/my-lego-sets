@@ -1,6 +1,7 @@
 import { RebrickableClient } from '@/pages/api/utils/rebrickable';
 import * as trpc from '@trpc/server';
 import next from 'next';
+import { resolve } from 'path';
 import { z } from 'zod';
 
 const rApi = new RebrickableClient();
@@ -18,11 +19,19 @@ export const appRouter = trpc
     },
   })
   .query('get-sets-by-id', {
-    input: z.object({ setId: z.number() }),
+    input: z.object({ listId: z.number() }),
     async resolve({ input }) {
       if (input) {
-        const sets = await rApi.getSetsByListId(input.setId);
+        const sets = await rApi.getSetsByListId(input.listId);
         return sets.results.map((set: any) => set.set)
+      }
+    }
+  })
+  .query('get-set-by-id', {
+    input: z.object({ setNum: z.string() }),
+    async resolve({ input }) {
+      if (input) {
+        return await rApi.getSetById(input.setNum);
       }
     }
   });

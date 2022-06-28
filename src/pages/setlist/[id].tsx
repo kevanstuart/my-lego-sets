@@ -5,10 +5,10 @@ import type React from 'react';
 import Link from 'next/link';
 
 const Setlist: React.FC = () => {
-  const router = useRouter()
-  const { id } = router.query
+  const router = useRouter();
+  const { id } = router.query;
 
-  const { data } = trpc.useQuery(['get-sets-by-id', { setId: +id! }], {
+  const { data } = trpc.useQuery(['get-sets-by-id', { listId: +id! }], {
     refetchInterval: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -38,17 +38,19 @@ const SetCard: React.FC<{
   set: SetFromServer
 }> = ({ set }) => {
   return (
-    <div className="p-4 bg-white rounded-md shadow">
-      <div className="flex h-72 items-center justify-center overflow-hidden">
-        <img src={set.set_img_url} className="max-h-full" />
-      </div>
-      <div>
-        <h5 className="mt-5">
-          <Link href={`/set/${set.set_num}`}>
-            <a>{`${set.set_num}: ${set.name}`}</a>
-          </Link>
-        </h5>
-      </div>
-    </div>
+    <>
+      <Link href={`/set/${set.set_num}`} passHref>
+        <div className="p-4 bg-white rounded-md shadow">
+          <div className="flex h-72 items-center justify-center overflow-hidden">
+            <img src={set.set_img_url} className="max-h-full" />
+          </div>
+          <div>
+            <h5 className="mt-5">
+              <a>{`${set.set_num}: ${set.name}`}</a>
+            </h5>
+          </div>
+        </div>
+      </Link>
+    </>
   );
 };
