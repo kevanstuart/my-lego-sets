@@ -11,6 +11,15 @@ export class RebrickableClient {
     'password': process.env.REBRICKABLE_PASSWORD!
   });
 
+  public async getThemes() {
+    const response = await fetch(
+      `${process.env.REBRICKABLE_BASE_URL}lego/themes`,
+      { headers: this.headers }
+    );
+
+    return (await response.json());
+  }
+
   public async getSetLists() {
     const response = await fetch(
       `${process.env.REBRICKABLE_BASE_URL}users/${this.userToken}/setlists/`,

@@ -1,18 +1,13 @@
-import { inferQueryResponse } from './api/trpc/[trpc]'
+import { inferQueryResponse } from '@/pages/api/trpc/[trpc]'
 import { trpc } from '@/utils/trpc';
 import type React from 'react';
 import Link from 'next/link';
 
 const Index: React.FC = () => {
-  const { data } = trpc.useQuery(['get-my-lists'], {
-    refetchInterval: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-  });
+  const btn = `bg-blue-500 hover:bg-blue-400 text-white font-bold 
+  py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded`;
 
-  const btn = 
-    'bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded';
-
+  const { data: lists } = trpc.useQuery(['get-my-lists']);
   type ListFromServer = inferQueryResponse<'get-my-lists'>[0];
 
   return (
@@ -22,7 +17,7 @@ const Index: React.FC = () => {
         <div className="text-xl text-center pt-8 max-w-4xl mx-auto">
           <h3>Please select your collection:</h3>
           <div className="p-8 flex justify-between items-center max-w-2xl mx-auto">
-            { data && data.map((item: ListFromServer) => (
+            { lists && lists.map((item: ListFromServer) => (
               <Link key={item.id} href={`/setlist/${item.id}`}>
                 <a className={btn}>{item.name}</a>
               </Link>
